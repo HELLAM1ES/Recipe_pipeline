@@ -1,0 +1,16 @@
+# Ignorer les fichiers de données volumineux
+data/
+
+# Ignorer l'environnement virtuel
+venv/
+
+# Ignorer les fichiers générés par le système et caches
+__pycache__/
+*.pyc
+*.pyo
+*.log
+*.bak
+
+# Ignorer les fichiers spécifiques
+recipes.csv
+cleaned_recipes.csv
