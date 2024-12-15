@@ -1,4 +1,5 @@
 #!/bin/bash
+
 echo "=== Démarrage complet du pipeline ==="
 
 # Étape 1 : Collecte des données
@@ -19,6 +20,8 @@ if [ $? -ne 0 ]; then
 fi
 echo "Données nettoyées avec succès."
 
-# Étape 3 : Lancement de Streamlit
+# Étape 3 : Lancement de l'application Streamlit
 echo "Étape 3 : Lancement de l'application Streamlit..."
 streamlit run application/app_streamlit.py
+
+echo "Pipeline terminé avec succès."
