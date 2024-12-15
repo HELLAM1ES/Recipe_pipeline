@@ -191,10 +191,9 @@ Si vous souhaitez arrêter ou supprimer les conteneurs Docker après usage :
 ## **📩 Contact**
 
 Pour toute question, suggestion ou collaboration, contactez-nous :  
-📧 **votre.email@example.com**
+📧 **chirine.dexposito@gmail.com
+lalabou0@gmail.com
+charlottecegarrapro@gmail.com**
 
 ---
 
-## **📝 Licence**
-
-Ce projet est sous licence **MIT**.
