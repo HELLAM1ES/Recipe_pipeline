@@ -45,12 +45,12 @@ Avant de commencer, assurez-vous d'avoir installé les outils suivants sur votre
 
 1. **Récupérez l'image Docker directement depuis Docker Hub :**
    ```bash
-   docker pull <votre-nom-utilisateur>/clicook-app:latest
+   docker pull HELLAM1ES/clicook-app:latest
    ```
 
 2. **Exécutez le conteneur Docker :**
    ```bash
-   docker run -p 8501:8501 <votre-nom-utilisateur>/clicook-app:latest
+   docker run -p 8501:8501 HELLAM1ES/clicook-app:latest
    ```
 
 3. **Accédez à l'application dans votre navigateur :**
@@ -92,7 +92,7 @@ Si vous préférez exécuter le projet sans Docker, suivez ces étapes :
 
 1. **Clonez le projet :**
    ```bash
-   git clone https://github.com/<votre-nom-utilisateur>/recipe_pipeline.git
+   git clone https://github.com/HELLAM1ES/recipe_pipeline.git
    cd recipe_pipeline
    ```
 
