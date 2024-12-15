@@ -11,13 +11,10 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Donner les permissions d'exécution aux scripts shell
-RUN chmod +x collect/collect_data.sh process/process_data.sh
+RUN chmod +x collect/collect_data.sh process/process_data.sh main.sh
 
 # Installer gdown (nécessaire pour collect_data.sh si utilisé)
 RUN pip install gdown
 
-# Exposer le port de Streamlit
-EXPOSE 8501
-
-# Commande par défaut pour exécuter le pipeline et Streamlit
-CMD bash -c "./collect/collect_data.sh && ./process/process_data.sh && streamlit run application/app_streamlit.py"
+# Commande pour lancer uniquement le pipeline via main.sh
+CMD ["bash", "./main.sh"]
