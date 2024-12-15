@@ -1,8 +1,8 @@
 import pandas as pd
 import os
 
-# Définir les chemins des fichiers avec des chemins absolus
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Définir le chemin absolu vers le répertoire parent pour garantir des références correctes
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 input_file = os.path.join(BASE_DIR, 'data', 'recipes.csv')
 output_file = os.path.join(BASE_DIR, 'data', 'cleaned_recipes.csv')
 

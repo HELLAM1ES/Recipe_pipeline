@@ -1,10 +1,13 @@
 #!/bin/bash
 
+# Définir le chemin absolu vers le répertoire parent pour garantir les bonnes références
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
 # Chemin du fichier à télécharger
-FILE_PATH="./data/recipes.csv"
+FILE_PATH="$BASE_DIR/data/recipes.csv"
 
 # Créer le dossier pour stocker les données
-mkdir -p ./data
+mkdir -p "$BASE_DIR/data"
 
 # Vérifier si le fichier existe déjà
 if [ -f "$FILE_PATH" ]; then
