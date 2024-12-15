@@ -4,17 +4,17 @@ FROM python:3.9-slim
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copier les fichiers du projet dans le conteneur
+# Copier tous les fichiers et dossiers nécessaires dans le conteneur
 COPY . /app
 
-# Installer les dépendances Python
+# Donner les permissions d'exécution à tous les scripts dans l'ensemble du projet
+RUN chmod -R +x /app
+
+# Installer les dépendances Python nécessaires
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Donner les permissions d'exécution aux scripts shell
-RUN chmod +x collect/collect_data.sh process/process_data.sh main.sh
+# Exposer le port pour Streamlit
+EXPOSE 8501
 
-# Installer gdown (nécessaire pour collect_data.sh si utilisé)
-RUN pip install gdown
-
-# Commande pour lancer uniquement le pipeline via main.sh
-CMD ["bash", "./main.sh"]
+# Commande par défaut pour exécuter le pipeline complet
+CMD ["bash", "main.sh"]
