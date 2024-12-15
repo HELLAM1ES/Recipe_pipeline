@@ -20,7 +20,7 @@ Avant de commencer, assurez-vous d'avoir installé les outils suivants sur votre
 
 1. **Clonez le projet depuis GitHub :**
    ```bash
-   git clone https://github.com/<votre-nom-utilisateur>/recipe_pipeline.git
+   git clone https://github.com/HELLAM1ES/recipe_pipeline.git
    cd recipe_pipeline
    ```
 
