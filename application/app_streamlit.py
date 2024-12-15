@@ -3,6 +3,7 @@ import streamlit as st
 import base64
 import pandas as pd
 from generate_recipe_openai import generate_recipe  # Assurez-vous que ce fichier est correctement configuré
+from recipe_finder import filter_recipes_by_ingredients
 
 # Configuration de la page Streamlit
 st.set_page_config(
@@ -11,11 +12,13 @@ st.set_page_config(
     layout="wide",
 )
 
+
 # Définir le chemin absolu vers le dossier `assets` et le fichier CSV
 ASSETS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../assets"))
 CSV_FILE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../data/cleaned_recipes.csv"))
 
 # CSS personnalisé
+
 def inject_css():
     st.markdown(
         """
@@ -83,6 +86,7 @@ def inject_css():
 
 # Inject CSS
 inject_css()
+
 
 # Barre de navigation
 def render_navbar():
@@ -171,90 +175,280 @@ def about_us_page():
     image_path = get_image("nous.jpg")
 
     if image_path:
-        st.image(image_path, caption="L'équipe Clicook", use_column_width=True)
+    	st.image(image_path, caption="L'équipe Clicook", use_container_width=True)
+
+
+
     st.write(
  """
-        ### L'histoire de Clicook
-        Nous sommes **Charlotte**, **Chirine**, et **Hella**, trois étudiantes passionnées en Mastère MOOSEF à Paris. 
-        Issues de parcours académiques variés, nous partageons deux grandes passions : **l'intelligence artificielle** et **la cuisine**.  
+
+    ### **L'histoire de Clicook**
+    Bienvenue chez **Clicook**, une initiative née de l'imagination et de la passion de trois étudiantes en Mastère **MOSEF** à Paris :  
+    **Charlotte**, **Chirine** et **Hella**. Issues de parcours académiques divers – entre sciences de l'ingénieur, intelligence artificielle et gestion de projets – nous nous sommes réunies autour d'une ambition commune :  
+    **transformer la cuisine du quotidien grâce à la technologie**.  
+
+    Tout a commencé lors de nos études, où la rigueur des cours, les projets interminables et les deadlines serrées laissaient peu de temps pour préparer des repas équilibrés.  
+    Comme beaucoup d'étudiants et de jeunes actifs, nous avons souvent été confrontées à des choix alimentaires rapides mais peu satisfaisants.  
+    C'est dans ce contexte que l'idée de **Clicook** a germé :  
+    *"Et si l'intelligence artificielle pouvait nous aider à mieux cuisiner, plus rapidement et avec les ingrédients déjà disponibles dans notre cuisine ?"*
+
+    ---
+
+    ### **Pourquoi Clicook ?**  
+    En tant qu'étudiantes, nous connaissons les défis quotidiens liés à la préparation des repas :  
+    - **Manque de temps** pour cuisiner entre les cours et les obligations.  
+    - **Absence d'inspiration** lorsqu'il s'agit d'imaginer des recettes.  
+    - **Budget limité**, qui rend l'optimisation des courses essentielle.  
+
+    **Clicook** est né pour offrir une **solution innovante** :  
+    des recettes **personnalisées, rapides et adaptées à vos besoins.**
+
+    ---
+
+    ### **Ce que nous proposons**  
+    Avec **Clicook**, bénéficiez de deux outils puissants :  
+
+    - 🧠 **Une intelligence artificielle** capable de générer des recettes personnalisées selon vos préférences alimentaires, votre budget et vos équipements.  
+    - 🔎 **Un moteur de recherche** intuitif qui vous permet de trouver des recettes adaptées aux ingrédients que vous avez déjà chez vous.  
+
+    Ensemble, ces fonctionnalités vous permettent de cuisiner **sans stress, sans gaspillage et en toute simplicité**.
+
+    ---
+
+    ### **Nos valeurs**  
+    - 🚀 **Innovation** : Tirer parti des dernières avancées technologiques pour révolutionner votre expérience culinaire.  
+    - 👩‍🍳 **Accessibilité** : Permettre à tout le monde, quel que soit son niveau en cuisine, de préparer des plats délicieux.  
+    - 🌍 **Écologie** : Réduire le gaspillage alimentaire en utilisant ce que vous avez déjà dans votre réfrigérateur.  
+    - 🤝 **Communauté** : Créer un espace d'échange et de partage autour de la passion de la cuisine.
+
+    ---
+
+    ### **Notre mission**  
+    Chez **Clicook**, notre ambition est simple :  
+    **Faire de la cuisine une expérience facile, agréable et innovante pour tous.**  
+
+    Que vous soyez :  
+    - Un **étudiant occupé** en quête de repas rapides,  
+    - Un **parent débordé** cherchant des solutions simples,  
+    - Ou un **amateur de cuisine** à la recherche de nouvelles inspirations,  
+
+    **Clicook est fait pour vous !**  
+
+    En combinant **technologie** et **créativité culinaire**, nous voulons vous accompagner dans chaque étape de la préparation de vos repas.
+
+    ---
+
+    ### **Rejoignez-nous !**  
+    🚀 Rejoignez l'aventure **Clicook** dès aujourd'hui :  
+    - Découvrez comment l'IA peut transformer vos habitudes culinaires.  
+    - Partagez vos retours et vos recettes avec notre communauté grandissante.  
+
+    Ensemble, redécouvrons le **plaisir de cuisiner**, en alliant **innovation, simplicité et saveur**. 🍽️✨  
+    
         
-        ### Pourquoi Clicook ?
-        En tant qu'étudiantes, nous savons combien il peut être difficile de trouver le temps de cuisiner des repas sains, équilibrés et délicieux 
-        tout en jonglant avec les cours, les projets et les deadlines. Clicook est né de ce besoin : une **solution innovante** pour répondre aux 
-        défis de la vie quotidienne en matière de cuisine.
-
-        ### Ce que nous proposons
-        Avec **Clicook**, nous voulons simplifier l'art de cuisiner grâce à deux outils principaux :
-        - Une **intelligence artificielle** capable de générer des recettes personnalisées adaptées à vos préférences alimentaires.
-        - Un moteur de recherche performant pour explorer des milliers de recettes en fonction des ingrédients que vous avez sous la main.
-
-        ### Nos valeurs
-        - **Innovation** : Tirer parti des dernières technologies pour révolutionner votre expérience culinaire.
-        - **Accessibilité** : Permettre à tout le monde, même sans expérience en cuisine, de préparer des plats délicieux.
-        - **Écologie** : Réduire le gaspillage alimentaire en utilisant ce que vous avez déjà chez vous.
-
-        ### Notre mission
-        Clicook, c'est plus qu'une simple application : c'est une **communauté** qui valorise l'ingéniosité culinaire et la technologie pour 
-        vous accompagner dans la préparation de vos repas. Que vous soyez un étudiant occupé, un parent débordé ou un amateur de cuisine, 
-        **Clicook est fait pour vous !**
-
-        ### Rejoignez-nous !
-        Ensemble, redécouvrons le plaisir de cuisiner, en combinant **innovation** et **simplicité**.
-
-        ---
         """
     )
     render_footer()
 
 # Page : Générer avec IA
+
 def ia_choice_page():
+    """
+    Page Streamlit pour générer une recette avec l'IA.
+    """
     render_navbar()
-    st.title("Générer une recette avec l'IA")
-    num_people = st.number_input("Pour combien de personnes ?", min_value=1, value=2)
-    healthy = st.radio("Healthy ?", ["Oui", "Non"])
-    vegetarian = st.radio("Végétarien ?", ["Oui", "Non"])
-    sweet_or_savory = st.radio("Sucré ou salé ?", ["Sucré", "Salé"])
-    if st.button("Générer"):
-        with st.spinner("Génération de recette en cours..."):
-            preferences = {
-                "num_people": num_people,
-                "healthy": healthy == "Oui",
-                "vegetarian": vegetarian == "Oui",
-                "sweet_or_savory": sweet_or_savory.lower(),
-            }
+    st.title("Générer une recette avec l'IA 🍽️")
+
+    # Collecte des préférences de l'utilisateur
+    st.write("### Vos préférences culinaires")
+
+    # Type de plat
+    dish_type = st.selectbox(
+        "Quel type de plat souhaitez-vous ?",
+        ["Entrée", "Plat principal", "Dessert", "Boisson"]
+    )
+
+    # Préférence de saveurs
+    flavor = st.radio(
+        "Préférence de saveurs :",
+        ["Sucrée", "Salée", "Épicée", "Acide"]
+    )
+
+    # Ingrédients spécifiques
+    include_ingredients = st.text_input(
+        "Ingrédients à inclure (ex : tomate, poulet, chocolat) :", ""
+    )
+
+    exclude_ingredients = st.text_input(
+        "Ingrédients à éviter (ex : gluten, lactose) :", ""
+    )
+
+    # Régime alimentaire
+    dietary_preferences = st.radio(
+        "Suivez-vous un régime spécifique ?",
+        ["Aucun", "Végétarien", "Vegan", "Sans gluten"]
+    )
+
+    # Budget
+    budget = st.slider(
+        "Quel est votre budget en euros pour les ingrédients ?",
+        5, 100, 20
+    )
+
+    # Vérification des incohérences
+    if dietary_preferences in ["Végétarien", "Vegan"] and "viande" in include_ingredients.lower():
+        st.warning("⚠️ Vous avez sélectionné un régime végétarien/vegan. La viande n'est pas autorisée.")
+        include_ingredients = ""
+
+    # Bouton pour générer la recette
+    if st.button("Générer ma recette 🚀"):
+        st.info("Génération de la recette en cours...")
+
+        # Création du dictionnaire des préférences
+        preferences = {
+            "dish_type": dish_type,
+            "flavor": flavor,
+            "include_ingredients": include_ingredients,
+            "exclude_ingredients": exclude_ingredients,
+            "dietary_preferences": dietary_preferences,
+            "budget": budget
+        }
+
+        # Appel de la fonction generate_recipe
+        try:
             recipe = generate_recipe(preferences)
-            st.success("Votre recette générée :")
-            st.text_area("Recette complète", recipe, height=300)
+            st.success("🎉 Voici votre recette personnalisée :")
+            st.markdown(recipe)  # Affiche la recette générée en markdown
+        except Exception as e:
+            st.error(f"❌ Erreur lors de la génération de la recette : {e}")
+
     render_footer()
+
 
 # Page : Recherche dans CSV
+
 def csv_search_page():
     render_navbar()
-    st.title("Recherche dans les données CSV")
-    ingredients = st.text_input("Entrez vos ingrédients, séparés par des virgules :")
+    st.title("🔎 Recherche de recettes dans la base CSV")
+
+    # Options pour la recherche
+    include_ingredients = st.text_input("📝 Ingrédients à inclure (séparés par des virgules) :")
+    exclude_ingredients = st.text_input("❌ Ingrédients à exclure (séparés par des virgules) :")
+    max_ingredients = st.number_input("🔢 Nombre maximal d'ingrédients dans la recette :", min_value=1, step=1, value=10)
+
     if st.button("Rechercher"):
         try:
-            data = pd.read_csv(CSV_FILE_PATH)
-            search_ingredients = [i.strip().lower() for i in ingredients.split(",")]
+            # Filtrer les recettes
+            recipes = filter_recipes_by_ingredients(CSV_FILE_PATH, include_ingredients, exclude_ingredients, max_ingredients)
 
-            def contains_all_ingredients(row):
-                return all(ingredient in row["ingredients"].lower() for ingredient in search_ingredients)
-
-            filtered_data = data[data.apply(contains_all_ingredients, axis=1)]
-            if filtered_data.empty:
-                st.warning("Aucune recette trouvée.")
+            # Afficher les recettes trouvées
+            if recipes.empty:
+                st.warning("Aucune recette ne correspond aux critères sélectionnés.")
             else:
-                for _, row in filtered_data.iterrows():
-                    st.subheader(row["title"])
-                    st.write(f"Ingrédients : {row['ingredients']}")
-                    st.write(f"Instructions : {row['directions']}")
+                st.success(f"{len(recipes)} recette(s) trouvée(s) :")
+                for _, row in recipes.iterrows():
+                    # Titre stylisé de la recette
+                    st.markdown(
+                        f"""
+                        <div style='
+                            background-color: #FFFAE6; 
+                            padding: 10px; 
+                            border-radius: 5px; 
+                            margin-top: 10px; 
+                            box-shadow: 0px 2px 5px rgba(0,0,0,0.1);'
+                        >
+                            <h3 style='color: #2C3E50; text-align: center;'>{row['title']}</h3>
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
+
+                    # Affichage des ingrédients sous forme de liste propre
+                    st.markdown("**🛒 Ingrédients :**")
+                    ingredients = eval(row['ingredients'])  # Convertir la chaîne en liste
+                    for ingredient in ingredients:  # Afficher chaque élément proprement
+                        st.markdown(f"- {ingredient}")
+
+                    # Affichage des instructions sous forme de texte continu
+                    st.markdown("**👨‍🍳 Instructions :**")
+                    instructions = eval(row['directions'])  # Convertir en liste
+                    instructions_text = " ".join(instructions)  # Fusionner les étapes
+                    st.write(instructions_text)
+
+                    # Ligne de séparation entre les recettes
                     st.markdown("---")
+
         except Exception as e:
-            st.error(f"Erreur lors du chargement des données : {e}")
+            st.error(f"Erreur lors de la recherche : {e}")
+
     render_footer()
 
+# Page Guide
+
+def guide_page():
+    render_navbar()
+    st.title("Guide d'utilisation de Clicook 🚀")
+
+    st.markdown("""
+    ## Bienvenue dans le guide d'utilisation de **Clicook** 🍽️  
+    Voici tout ce que vous devez savoir pour tirer le meilleur parti de notre application culinaire :
+
+    ---
+
+    ### 🔎 **Recherche dans le CSV**  
+    - Entrez les ingrédients que vous **avez** dans le champ *"Ingrédients à inclure"*.  
+    - Si vous souhaitez **éviter certains ingrédients**, renseignez-les dans le champ *"Ingrédients à exclure"*.  
+    - Vous pouvez aussi **limiter** le nombre maximal d'ingrédients pour des recettes simples.  
+    - Cliquez sur **Rechercher** pour voir les recettes correspondantes.
+
+    #### Exemple :  
+    - **Ingrédients à inclure** : *poulet, tomate*  
+    - **Ingrédients à exclure** : *lactose*  
+    - **Nombre maximal d'ingrédients** : *5*  
+
+    Vous obtiendrez des recettes rapides et adaptées à votre cuisine !
+
+    ---
+
+    ### 🧠 **Génération de recette avec IA**  
+    - Sélectionnez le **type de plat** : *entrée, plat principal, dessert ou boisson*.  
+    - Indiquez vos **saveurs préférées** : *sucrée, salée, épicée ou acide*.  
+    - Ajoutez les **ingrédients spécifiques** que vous souhaitez inclure ou éviter.  
+    - Précisez votre **régime alimentaire** : *aucun, végétarien, vegan, sans gluten*.  
+    - Fixez votre **budget** pour optimiser vos dépenses.  
+
+    Cliquez sur **"Générer ma recette"** pour obtenir une recette personnalisée créée par notre IA.
+
+    #### Exemple :  
+    - **Type de plat** : *Plat principal*  
+    - **Saveurs** : *Salée*  
+    - **Ingrédients à inclure** : *poulet, riz*  
+    - **Budget** : *15 euros*  
+
+    L'IA vous proposera une recette savoureuse en quelques secondes.
+
+    ---
+
+    ### 👨‍🍳 **Astuce Cuisine**  
+    - **Utilisez les filtres intelligemment** pour trouver des recettes simples avec peu d'ingrédients.  
+    - **Explorez** les différentes saveurs pour des repas variés et équilibrés.  
+    - **Ajoutez des équipements** disponibles dans l'application pour des suggestions adaptées à votre matériel.
+
+    ---
+
+    ### 🎯 **Rejoignez-nous sur les réseaux sociaux !**  
+    Suivez-nous pour plus d'astuces, d'inspirations et pour partager vos propres créations culinaires :  
+    - 📸 [Instagram](#)  
+    - 👍 [Facebook](#)  
+
+    Merci de choisir **Clicook** ! Ensemble, réinventons le plaisir de cuisiner. 🍲  
+    """, unsafe_allow_html=True)
+
+    render_footer()
+
+
 # Gestion des pages
-page = st.experimental_get_query_params().get("page", ["home"])[0]
+page = st.query_params.get("page", "home")
 
 if page == "home":
     home_page()
@@ -264,4 +458,5 @@ elif page == "ia_choice":
     ia_choice_page()
 elif page == "csv_search":
     csv_search_page()
-
+elif page == "guide":
+    guide_page()

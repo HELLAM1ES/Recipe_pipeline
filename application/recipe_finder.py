@@ -1,56 +1,37 @@
 import pandas as pd
 
-# Chemin vers les données nettoyées
-DATA_FILE = './data/cleaned_recipes.csv'
-
-def load_data():
+def filter_recipes_by_ingredients(csv_file_path, include_ingredients, exclude_ingredients, max_ingredients=None):
     """
-    Charger les données nettoyées depuis le fichier CSV.
+    Filtre les recettes à partir des ingrédients inclus/exclus et d'une limite sur le nombre d'ingrédients.
+
+    :param csv_file_path: Chemin vers le fichier CSV contenant les recettes.
+    :param include_ingredients: Liste d'ingrédients à inclure.
+    :param exclude_ingredients: Liste d'ingrédients à exclure.
+    :param max_ingredients: Nombre maximal d'ingrédients pour la recette.
+    :return: DataFrame filtré des recettes.
     """
-    df = pd.read_csv(DATA_FILE)
-    df['ingredients'] = df['ingredients'].apply(eval)  # Convertir les chaînes en listes Python
-    df['NER'] = df['NER'].apply(eval)  # Convertir les chaînes en listes Python
-    return df
+    try:
+        # Charger les données depuis le fichier CSV
+        data = pd.read_csv(csv_file_path)
+        
+        # Prétraitement des colonnes
+        data['ingredients'] = data['ingredients'].fillna("").str.lower()
+        
+        # Appliquer les filtres d'inclusion
+        if include_ingredients:
+            include_ingredients = [i.strip().lower() for i in include_ingredients.split(",")]
+            data = data[data['ingredients'].apply(lambda x: all(ingredient in x for ingredient in include_ingredients))]
 
-def find_recipes(df, ingredients_list):
-    """
-    Trouver des recettes qui contiennent tous les ingrédients donnés.
-    """
-    # Filtrer les recettes qui contiennent tous les ingrédients de la liste
-    matched_recipes = df[df['NER'].apply(lambda x: all(ingredient in x for ingredient in ingredients_list))]
-    return matched_recipes
+        # Appliquer les filtres d'exclusion
+        if exclude_ingredients:
+            exclude_ingredients = [i.strip().lower() for i in exclude_ingredients.split(",")]
+            data = data[~data['ingredients'].apply(lambda x: any(ingredient in x for ingredient in exclude_ingredients))]
 
-def main():
-    # Charger les données
-    print("Chargement des données nettoyées...")
-    recipes_df = load_data()
+        # Appliquer la limite du nombre d'ingrédients
+        if max_ingredients:
+            data = data[data['ingredients'].apply(lambda x: len(x.split(',')) <= max_ingredients)]
 
-    print("\nBienvenue dans le moteur de recherche de recettes !")
-    print("Entrez une liste d'ingrédients pour trouver des recettes correspondantes.")
-    print("Exemple : sugar, butter, vanilla\n")
+        return data
 
-    # Demander les ingrédients à l'utilisateur
-    user_input = input("Entrez vos ingrédients, séparés par des virgules : ").strip()
-
-    if user_input:
-        # Transformer l'entrée utilisateur en liste d'ingrédients
-        ingredients_list = [ingredient.strip().lower() for ingredient in user_input.split(",")]
-
-        # Rechercher des recettes
-        matched_recipes = find_recipes(recipes_df, ingredients_list)
-
-        # Afficher les résultats
-        if not matched_recipes.empty:
-            print(f"\nRecettes trouvées ({len(matched_recipes)} résultat(s)) :\n")
-            for index, row in matched_recipes.head(5).iterrows():
-                print(f"- {row['title']}")
-                print(f"  Ingrédients : {', '.join(row['ingredients'])}")
-                print(f"  Instructions : {row['directions']}")
-                print(f"  Lien : {row['link']}\n")
-        else:
-            print("\nAucune recette trouvée avec tous les ingrédients donnés.")
-    else:
-        print("\nVous n'avez pas entré d'ingrédients. Veuillez réessayer.")
-
-if __name__ == "__main__":
-    main()
+    except Exception as e:
+        raise Exception(f"Erreur lors du filtrage des recettes : {e}")
