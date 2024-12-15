@@ -13,11 +13,11 @@ st.set_page_config(
 )
 
 
-# Définir le chemin absolu vers le dossier `assets` et le fichier CSV
+
 ASSETS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../assets"))
 CSV_FILE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../data/cleaned_recipes.csv"))
 
-# CSS personnalisé
+
 
 def inject_css():
     st.markdown(
