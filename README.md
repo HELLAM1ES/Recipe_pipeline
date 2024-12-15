@@ -192,7 +192,7 @@ Si vous souhaitez arrêter ou supprimer les conteneurs Docker après usage :
 
 Pour toute question, suggestion ou collaboration, contactez-nous :  
 📧 **chirine.dexposito@gmail.com
-lalabou0@gmail.com
+hella.bouhadda@gmail.com
 charlottecegarrapro@gmail.com**
 
 ---
