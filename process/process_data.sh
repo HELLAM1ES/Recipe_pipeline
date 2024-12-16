@@ -3,6 +3,7 @@
 # Définir les chemins des fichiers
 INPUT_FILE="data/recipes.csv"
 OUTPUT_FILE="data/cleaned_recipes.csv"
+SCRIPT_FILE="process/process_data.py"
 
 # Vérifier si le fichier nettoyé existe déjà
 if [ -f "$OUTPUT_FILE" ]; then
@@ -10,9 +11,15 @@ if [ -f "$OUTPUT_FILE" ]; then
     exit 0
 fi
 
+# Vérifier si le script Python existe
+if [ ! -f "$SCRIPT_FILE" ]; then
+    echo "Erreur : Le script Python $SCRIPT_FILE est introuvable."
+    exit 1
+fi
+
 # Si le fichier nettoyé n'existe pas, lancer le script Python
 echo "Nettoyage des données en cours..."
-python3 process_data.py
+python3 "$SCRIPT_FILE"
 
 # Vérification de la réussite du nettoyage
 if [ $? -eq 0 ]; then
