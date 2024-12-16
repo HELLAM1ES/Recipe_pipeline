@@ -12,7 +12,7 @@ fi
 
 # Si le fichier nettoyé n'existe pas, lancer le script Python
 echo "Nettoyage des données en cours..."
-python3 process/process_data.py
+python3 process_data.py
 
 # Vérification de la réussite du nettoyage
 if [ $? -eq 0 ]; then
