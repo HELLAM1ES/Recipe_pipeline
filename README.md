@@ -144,8 +144,8 @@ recipe_pipeline/
 │   └── collect_data.sh        # Télécharge les données depuis Google Drive
 │
 ├── process/                   # Scripts pour nettoyer les données
-│   └── process_data.py        # Nettoie les données brutes et les prépare
-│
+│   └── process_data.sh        # Nettoie les données brutes et les prépare
+│   └── process_data.py
 ├── data/                      # Contient les fichiers de données (non inclus dans Git)
 │   ├── recipes.csv            # Données brutes téléchargées (générées)
 │   └── cleaned_recipes.csv    # Données nettoyées (générées)
